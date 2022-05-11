@@ -1,3 +1,4 @@
+import 'antd/dist/antd.css'
 import { Route, Switch } from 'react-router-dom'
 import Layout from './pages/layout'
 import Login from './pages/login'
