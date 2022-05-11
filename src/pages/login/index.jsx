@@ -9,14 +9,55 @@ export default class Login extends Component {
 			<div className={styles.login}>
 				<Card className='login-container'>
 					<img className='logo' src={logo} alt='极客园' />
-					<Form>
-						<Form.Item>
+					<Form validateTrigger={['onChange', 'onBlur']}>
+						<Form.Item
+							name={'mobile'}
+							rules={[
+								{
+									required: true,
+									message: '手机号不能为空',
+								},
+								{
+									pattern: /^1\d{10}$/,
+									message: '手机号格式不正确',
+								},
+							]}
+						>
 							<Input placeholder='请输入手机号' />
 						</Form.Item>
-						<Form.Item>
+						<Form.Item
+							name='code'
+							rules={[
+								{
+									required: true,
+									message: '验证码不能为空',
+								},
+								{
+									pattern: /\d{5}$/,
+									message: '验证码格式不正确',
+								},
+							]}
+						>
 							<Input placeholder='请输入验证码' />
 						</Form.Item>
-						<Form.Item>
+						<Form.Item
+							valuePropName='checked'
+							name='agree'
+							rules={[
+								{
+									validator: (reule, value) => {
+										console.log(value)
+										return value
+											? Promise.resolve()
+											: Promise.reject(
+													new Error(
+														'请阅读并同意用户协议'
+													)
+											  )
+									},
+								},
+							]}
+						>
 							<Checkbox>
 								我已阅读并同意[隐私条款]和[用户协议]
 							</Checkbox>
