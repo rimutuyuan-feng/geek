@@ -2,11 +2,11 @@ import { Component } from 'react'
 import { Card } from 'antd'
 import logo from 'assets/logo.png'
 import { Form, Input, Button, Checkbox } from 'antd'
-import './index.css'
+import styles from './index.module.scss'
 export default class Login extends Component {
 	render() {
 		return (
-			<div className='login'>
+			<div className={styles.login}>
 				<Card className='login-container'>
 					<img className='logo' src={logo} alt='极客园' />
 					<Form>
