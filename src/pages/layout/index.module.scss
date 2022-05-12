@@ -1,0 +1,30 @@
+.container {
+	width: 100vw;
+	height: 100vh;
+	:global {
+		.ant-layout-header {
+			padding: 0;
+		}
+		.logo {
+			float: left;
+			width: 200px;
+			height: 60px;
+			margin: 2px 0;
+			background-image: url('~assets/logo.png');
+			background-size: cover;
+		}
+		.profile {
+			float: right;
+			color: #fff;
+			font-weight: 700;
+			margin-right: 20px;
+			span + span {
+				margin-left: 20px;
+				cursor: pointer;
+			}
+		}
+		.site-layout-background {
+			background-color: #fff;
+		}
+	}
+}
