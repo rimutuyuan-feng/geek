@@ -2,6 +2,10 @@ import { Component } from 'react'
 import { Layout, Menu } from 'antd'
 import { HomeOutlined } from '@ant-design/icons'
 import styles from './index.module.scss'
+import { Switch, Route, Link } from 'react-router-dom'
+import Home from 'pages/Home'
+import ArticlePublish from 'pages/ArticlePublish'
+import ArticleList from 'pages/ArticleList'
 import {
 	LogoutOutlined,
 	FileTextOutlined,
@@ -19,9 +23,9 @@ function getItem(label, key, icon, children, type) {
 	}
 }
 const items = [
-	getItem('数据概览', '1', <HomeOutlined />),
-	getItem('内容管理', '2', <FileTextOutlined />),
-	getItem('发布文章', '3', <EditOutlined />),
+	getItem(<Link to='/home'>数据概览</Link>, '1', <HomeOutlined />),
+	getItem(<Link to='/home/list'>内容管理</Link>, '2', <FileTextOutlined />),
+	getItem(<Link to='/home/publish'>发布文章</Link>, '3', <EditOutlined />),
 ]
 export default class LayoutPage extends Component {
 	render() {
@@ -46,7 +50,17 @@ export default class LayoutPage extends Component {
 						}}
 					>
 						<Content className='site-layout-background'>
-							Content
+							<Switch>
+								<Route exact path='/home' component={Home} />
+								<Route
+									path='/home/list'
+									component={ArticleList}
+								/>
+								<Route
+									path='/home/publish'
+									component={ArticlePublish}
+								/>
+							</Switch>
 						</Content>
 					</Layout>
 				</Layout>
