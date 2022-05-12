@@ -12,6 +12,7 @@ import {
 	EditOutlined,
 } from '@ant-design/icons'
 import { removeToken } from 'utils/storage'
+import { getUserProfile } from 'api/user'
 const { Header, Content, Sider } = Layout
 
 function getItem(label, key, icon, children, type) {
@@ -37,13 +38,16 @@ const items = [
 	),
 ]
 export default class LayoutPage extends Component {
+	state = {
+		profile: {},
+	}
 	render() {
 		return (
 			<Layout className={styles.container}>
 				<Header className='header'>
 					<div className='logo' />
 					<div className='profile'>
-						<span>你好</span>
+						<span>{this.state.profile.name}</span>
 						<span>
 							<Popconfirm
 								title='确认退出登录？'
@@ -92,5 +96,10 @@ export default class LayoutPage extends Component {
 		removeToken()
 		this.props.history.push('/login')
 		message.success('退出成功', 1)
+	}
+	async componentDidMount() {
+		const { data: user } = await getUserProfile()
+		console.log(user)
+		this.setState({ profile: user })
 	}
 }
