@@ -35,7 +35,7 @@ instance.interceptors.response.use(
 		if (error.response.status === 401) {
 			removeToken()
 			message.warn('登录信息过期了', 1)
-			history.location.push('/login')
+			history.push('/login')
 		}
 		return Promise.reject(error)
 	}
