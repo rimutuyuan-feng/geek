@@ -90,7 +90,11 @@ export default class Login extends Component {
 		try {
 			const res = await login(value.mobile, value.code)
 			setToken(res.data.token)
-			if (hasToken) {
+			const { state } = this.props.location
+			console.log(state)
+			if (state) {
+				this.props.history.push(state.from)
+			} else {
 				this.props.history.push('/home')
 			}
 		} catch (error) {}

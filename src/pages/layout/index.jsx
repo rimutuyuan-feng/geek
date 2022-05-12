@@ -99,7 +99,6 @@ export default class LayoutPage extends Component {
 	}
 	async componentDidMount() {
 		const { data: user } = await getUserProfile()
-		console.log(user)
 		this.setState({ profile: user })
 	}
 }
