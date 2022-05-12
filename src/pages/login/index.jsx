@@ -3,13 +3,23 @@ import { Card } from 'antd'
 import logo from 'assets/logo.png'
 import { Form, Input, Button, Checkbox } from 'antd'
 import styles from './index.module.scss'
+import { hasToken, setToken } from 'utils/storage'
+import { login } from 'api/user'
 export default class Login extends Component {
 	render() {
 		return (
 			<div className={styles.login}>
 				<Card className='login-container'>
 					<img className='logo' src={logo} alt='极客园' />
-					<Form validateTrigger={['onChange', 'onBlur']}>
+					<Form
+						onFinish={this.onFinish}
+						validateTrigger={['onChange', 'onBlur']}
+						initialValues={{
+							mobile: '13911111111',
+							code: '246810',
+							agree: true,
+						}}
+					>
 						<Form.Item
 							name={'mobile'}
 							rules={[
@@ -76,4 +86,14 @@ export default class Login extends Component {
 			</div>
 		)
 	}
+	onFinish = async (value) => {
+		try {
+			const res = await login(value.mobile, value.code)
+			setToken(res.data.token)
+			if (hasToken) {
+				this.props.history.push('/home')
+			}
+		} catch (error) {}
+	}
+	componentDidMount() {}
 }
