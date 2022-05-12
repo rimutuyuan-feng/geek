@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { Layout, Menu } from 'antd'
+import { Layout, Menu, message, Popconfirm } from 'antd'
 import { HomeOutlined } from '@ant-design/icons'
 import styles from './index.module.scss'
 import { Switch, Route, Link } from 'react-router-dom'
@@ -11,6 +11,7 @@ import {
 	FileTextOutlined,
 	EditOutlined,
 } from '@ant-design/icons'
+import { removeToken } from 'utils/storage'
 const { Header, Content, Sider } = Layout
 
 function getItem(label, key, icon, children, type) {
@@ -36,7 +37,14 @@ export default class LayoutPage extends Component {
 					<div className='profile'>
 						<span>你好</span>
 						<span>
-							<LogoutOutlined /> 退出
+							<Popconfirm
+								title='确认退出登录？'
+								onConfirm={this.confirm}
+								okText='确认'
+								cancelText='取消'
+							>
+								<LogoutOutlined /> 退出
+							</Popconfirm>
 						</span>
 					</div>
 				</Header>
@@ -66,5 +74,10 @@ export default class LayoutPage extends Component {
 				</Layout>
 			</Layout>
 		)
+	}
+	confirm = () => {
+		removeToken()
+		this.props.history.push('/login')
+		message.success('退出成功', 1)
 	}
 }
