@@ -24,9 +24,17 @@ function getItem(label, key, icon, children, type) {
 	}
 }
 const items = [
-	getItem(<Link to='/home'>数据概览</Link>, '1', <HomeOutlined />),
-	getItem(<Link to='/home/list'>内容管理</Link>, '2', <FileTextOutlined />),
-	getItem(<Link to='/home/publish'>发布文章</Link>, '3', <EditOutlined />),
+	getItem(<Link to='/home'>数据概览</Link>, '/home', <HomeOutlined />),
+	getItem(
+		<Link to='/home/list'>内容管理</Link>,
+		'/home/list',
+		<FileTextOutlined />
+	),
+	getItem(
+		<Link to='/home/publish'>发布文章</Link>,
+		'/home/publish',
+		<EditOutlined />
+	),
 ]
 export default class LayoutPage extends Component {
 	render() {
@@ -50,7 +58,12 @@ export default class LayoutPage extends Component {
 				</Header>
 				<Layout>
 					<Sider width={200}>
-						<Menu theme='dark' mode='inline' items={items} />
+						<Menu
+							theme='dark'
+							mode='inline'
+							items={items}
+							defaultSelectedKeys={[this.props.location.pathname]}
+						/>
 					</Sider>
 					<Layout
 						style={{
