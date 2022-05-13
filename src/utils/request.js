@@ -32,6 +32,10 @@ instance.interceptors.response.use(
 	function (error) {
 		// 超出 2xx 范围的状态码都会触发该函数。
 		// 对响应错误做点什么
+		if (!error.response) {
+			message.error('网络繁忙，请重试')
+			return Promise.reject('网络繁忙，请重试')
+		}
 		if (error.response.status === 401) {
 			removeToken()
 			message.warn('登录信息过期了', 1)
