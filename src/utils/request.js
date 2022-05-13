@@ -2,8 +2,9 @@ import axios from 'axios'
 import { hasToken, getToken, removeToken } from './storage'
 import { message } from 'antd'
 import history from './history'
+export const baseUrl = 'http://geek.itheima.net/v1_0/'
 const instance = axios.create({
-	baseURL: 'http://geek.itheima.net/v1_0/',
+	baseURL: baseUrl,
 	timeout: 3000,
 })
 
