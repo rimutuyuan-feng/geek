@@ -10,73 +10,101 @@ import {
 	Table,
 	Image,
 	Tag,
+	Space,
+	Modal,
 } from 'antd'
 import statusInfo from 'utils/status'
 import { getChannels } from 'api/channels'
-import { getArticles } from 'api/article'
+import { deleteArticle, getArticles } from 'api/article'
 import defaultImg from 'assets/error.png'
+import {
+	EditOutlined,
+	DeleteOutlined,
+	ExclamationCircleOutlined,
+} from '@ant-design/icons'
 const { Option } = Select
-const columns = [
-	{
-		title: '封面',
-		dataIndex: 'cover',
-		key: 'cover',
-		render: (cover) => {
-			if (cover.type === 0) {
-				return <Image src={defaultImg} width='200px' height='100px' />
-			} else {
-				return (
-					<Image
-						src={cover.images[0]}
-						width='200px'
-						height='100px'
-						fallback={defaultImg}
-					/>
-				)
-			}
-		},
-	},
-	{
-		title: '标题',
-		dataIndex: 'title',
-		key: 'title',
-	},
-	{
-		title: '状态',
-		dataIndex: 'status',
-		key: 'status',
-		render: (status) => (
-			<Tag color={statusInfo[status].color}>
-				{statusInfo[status].type}
-			</Tag>
-		),
-	},
-	{
-		title: '发布时间',
-		dataIndex: 'pubdate',
-		key: 'pubdate',
-	},
-	{
-		title: '阅读数',
-		dataIndex: 'read_count',
-		key: 'read_count',
-	},
-	{
-		title: '评论数',
-		dataIndex: 'comment_count',
-		key: 'comment_count',
-	},
-	{
-		title: '点赞数',
-		dataIndex: 'like_count',
-		key: 'like_count',
-	},
-	{
-		title: '操作',
-		key: 'method',
-	},
-]
 export default class ArticleList extends Component {
+	columns = [
+		{
+			title: '封面',
+			dataIndex: 'cover',
+			key: 'cover',
+			render: (cover) => {
+				if (cover.type === 0) {
+					return (
+						<Image src={defaultImg} width='200px' height='100px' />
+					)
+				} else {
+					return (
+						<Image
+							src={cover.images[0]}
+							width='200px'
+							height='100px'
+							fallback={defaultImg}
+						/>
+					)
+				}
+			},
+		},
+		{
+			title: '标题',
+			dataIndex: 'title',
+			key: 'title',
+		},
+		{
+			title: '状态',
+			dataIndex: 'status',
+			key: 'status',
+			render: (status) => (
+				<Tag color={statusInfo[status].color}>
+					{statusInfo[status].type}
+				</Tag>
+			),
+		},
+		{
+			title: '发布时间',
+			dataIndex: 'pubdate',
+			key: 'pubdate',
+		},
+		{
+			title: '阅读数',
+			dataIndex: 'read_count',
+			key: 'read_count',
+		},
+		{
+			title: '评论数',
+			dataIndex: 'comment_count',
+			key: 'comment_count',
+		},
+		{
+			title: '点赞数',
+			dataIndex: 'like_count',
+			key: 'like_count',
+		},
+		{
+			title: '操作',
+			render: (article) => {
+				return (
+					<Space>
+						<Button
+							type='primary'
+							shape='circle'
+							icon={<EditOutlined />}
+						></Button>
+						<Button
+							type='primary'
+							shape='circle'
+							danger
+							icon={<DeleteOutlined />}
+							onClick={() => {
+								this.handleDelete(article.id)
+							}}
+						></Button>
+					</Space>
+				)
+			},
+		},
+	]
 	state = { channels: [], articles: [], total: 0 }
 	reqParams = { page: 1, per_page: 10 }
 	render() {
@@ -132,7 +160,7 @@ export default class ArticleList extends Component {
 					title={`根据筛选条件共查询到${this.state.total}条结果：`}
 				>
 					<Table
-						columns={columns}
+						columns={this.columns}
 						dataSource={this.state.articles}
 						pagination={{
 							total: this.state.total,
@@ -183,6 +211,18 @@ export default class ArticleList extends Component {
 		this.setState({
 			articles: res.data.results,
 			total: res.data.total_count,
+		})
+	}
+	handleDelete = (id) => {
+		Modal.confirm({
+			title: '温馨提示？',
+			icon: <ExclamationCircleOutlined />,
+			content: '你确定要删除文章吗',
+			onOk: async () => {
+				// 发送请求进行删除
+				await deleteArticle(id)
+				this.getArticlesList(this.params)
+			},
 		})
 	}
 }
