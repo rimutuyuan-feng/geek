@@ -3,7 +3,7 @@ import { Card } from 'antd'
 import logo from 'assets/logo.png'
 import { Form, Input, Button, Checkbox } from 'antd'
 import styles from './index.module.scss'
-import { hasToken, setToken } from 'utils/storage'
+import { setToken } from 'utils/storage'
 import { login } from 'api/user'
 export default class Login extends Component {
 	render() {
