@@ -6,3 +6,9 @@ export const getArticles = (params = {}) => {
 		params,
 	})
 }
+export const deleteArticle = (id) => {
+	return request({
+		method: 'delete',
+		url: `mp/articles/${id}`,
+	})
+}
