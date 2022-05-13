@@ -12,3 +12,7 @@ export const deleteArticle = (id) => {
 		url: `mp/articles/${id}`,
 	})
 }
+
+export const addArticle = (data,draft=false) => {
+	return request.post(`mp/articles?draft=${draft}`, data)
+}
