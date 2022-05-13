@@ -5,7 +5,6 @@ import {
 	Form,
 	Radio,
 	Button,
-	Select,
 	DatePicker,
 	Table,
 	Image,
@@ -15,7 +14,6 @@ import {
 	message,
 } from 'antd'
 import statusInfo from 'utils/status'
-import { getChannels } from 'api/channels'
 import { deleteArticle, getArticles } from 'api/article'
 import defaultImg from 'assets/error.png'
 import {
@@ -23,7 +21,7 @@ import {
 	DeleteOutlined,
 	ExclamationCircleOutlined,
 } from '@ant-design/icons'
-const { Option } = Select
+import Channel from 'components/Channel'
 export default class ArticleList extends Component {
 	columns = [
 		{
@@ -106,7 +104,7 @@ export default class ArticleList extends Component {
 			},
 		},
 	]
-	state = { channels: [], articles: [], total: 0 }
+	state = { articles: [], total: 0 }
 	reqParams = { page: 1, per_page: 10 }
 	render() {
 		return (
@@ -135,16 +133,7 @@ export default class ArticleList extends Component {
 							</Radio.Group>
 						</Form.Item>
 						<Form.Item label='频道' name='channel_id'>
-							<Select
-								placeholder='请选择文章频道'
-								style={{ width: 200 }}
-							>
-								{this.state.channels.map((channel) => (
-									<Option key={channel.id} value={channel.id}>
-										{channel.name}
-									</Option>
-								))}
-							</Select>
+							<Channel />
 						</Form.Item>
 						<Form.Item label='日期' name='data'>
 							<DatePicker.RangePicker />
@@ -199,14 +188,7 @@ export default class ArticleList extends Component {
 	}
 
 	componentDidMount() {
-		this.getChannelsList()
 		this.getArticlesList()
-	}
-	getChannelsList = async () => {
-		const res = await getChannels()
-		this.setState({
-			channels: res.data.channels,
-		})
 	}
 	getArticlesList = async (params = {}) => {
 		const res = await getArticles(params)
