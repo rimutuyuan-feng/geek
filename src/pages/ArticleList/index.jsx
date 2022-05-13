@@ -12,6 +12,7 @@ import {
 	Tag,
 	Space,
 	Modal,
+	message,
 } from 'antd'
 import statusInfo from 'utils/status'
 import { getChannels } from 'api/channels'
@@ -160,6 +161,7 @@ export default class ArticleList extends Component {
 					title={`根据筛选条件共查询到${this.state.total}条结果：`}
 				>
 					<Table
+						rowKey='id'
 						columns={this.columns}
 						dataSource={this.state.articles}
 						pagination={{
@@ -221,7 +223,8 @@ export default class ArticleList extends Component {
 			onOk: async () => {
 				// 发送请求进行删除
 				await deleteArticle(id)
-				this.getArticlesList(this.params)
+				this.getArticlesList(this.reqParams)
+				message.success('删除成功')
 			},
 		})
 	}
