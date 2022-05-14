@@ -85,10 +85,12 @@ export default class LayoutPage extends Component {
 									exact
 									path='/home/publish'
 									component={ArticlePublish}
+									key='add'
 								/>
 								<Route
 									path='/home/publish/:id'
 									component={ArticlePublish}
+									key='edit'
 								/>
 							</Switch>
 						</Content>
