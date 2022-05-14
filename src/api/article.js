@@ -6,6 +6,9 @@ export const getArticles = (params = {}) => {
 		params,
 	})
 }
+export const getArticle = (id) => {
+	return request.get(`mp/articles/${id}`)
+}
 export const deleteArticle = (id) => {
 	return request({
 		method: 'delete',
@@ -13,6 +16,9 @@ export const deleteArticle = (id) => {
 	})
 }
 
-export const addArticle = (data,draft=false) => {
+export const addArticle = (data, draft = false) => {
 	return request.post(`mp/articles?draft=${draft}`, data)
+}
+export const editArticle = (data, draft = false, id) => {
+	return request.put(`mp/articles/${id}?draft=${draft}`, data)
 }

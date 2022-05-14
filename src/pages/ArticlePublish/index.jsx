@@ -10,7 +10,7 @@ import {
 	Modal,
 	message,
 } from 'antd'
-import { addArticle } from 'api/article'
+import { addArticle, editArticle, getArticle } from 'api/article'
 import Channel from 'components/Channel'
 import React, { Component } from 'react'
 import ReactQuill from 'react-quill'
@@ -24,6 +24,7 @@ export default class ArticlePublish extends Component {
 		fileList: [],
 		previewVisible: false,
 		imgUrl: '',
+		id: this.props.match.params.id,
 	}
 	render() {
 		return (
@@ -32,7 +33,9 @@ export default class ArticlePublish extends Component {
 					title={
 						<Breadcrumb separator='>'>
 							<Breadcrumb.Item>首页</Breadcrumb.Item>
-							<Breadcrumb.Item>发布文章</Breadcrumb.Item>
+							<Breadcrumb.Item>
+								{this.state.id ? '修改文章' : '发布文章'}
+							</Breadcrumb.Item>
 						</Breadcrumb>
 					}
 					style={{ width: '100%', marginBottom: '20px' }}
@@ -159,13 +162,25 @@ export default class ArticlePublish extends Component {
 		const images = this.state.fileList.map(
 			(file) => file.url || file.response.data.url
 		)
-		await addArticle(
-			{
-				...values,
-				cover: { type: this.state.type, images: images },
-			},
-			draft
-		)
+		if (this.state.id) {
+			await editArticle(
+				{
+					...values,
+					cover: { type: this.state.type, images: images },
+				},
+				draft,
+				this.state.id
+			)
+		} else {
+			await addArticle(
+				{
+					...values,
+					cover: { type: this.state.type, images: images },
+				},
+				draft
+			)
+		}
+
 		message.success('添加成功', 1)
 		this.props.history.push('/home/list')
 	}
@@ -175,5 +190,17 @@ export default class ArticlePublish extends Component {
 	addDraft = async () => {
 		const values = await this.formRef.current.validateFields()
 		this.onSave(values, true)
+	}
+	async componentDidMount() {
+		if (this.state.id) {
+			const res = await getArticle(this.state.id)
+			this.formRef.current.setFieldsValue(res.data)
+			this.setState({
+				fileList: res.data.cover.images.map((image) => ({
+					url: image,
+				})),
+				type: res.data.cover.type,
+			})
+		}
 	}
 }

@@ -89,6 +89,11 @@ export default class ArticleList extends Component {
 							type='primary'
 							shape='circle'
 							icon={<EditOutlined />}
+							onClick={() => {
+								this.props.history.push(
+									`/home/publish/${article.id}`
+								)
+							}}
 						></Button>
 						<Button
 							type='primary'
