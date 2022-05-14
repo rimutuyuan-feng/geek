@@ -40,6 +40,7 @@ const items = [
 export default class LayoutPage extends Component {
 	state = {
 		profile: {},
+		selectedKey: this.props.location.pathname,
 	}
 	render() {
 		return (
@@ -66,7 +67,7 @@ export default class LayoutPage extends Component {
 							theme='dark'
 							mode='inline'
 							items={items}
-							defaultSelectedKeys={[this.props.location.pathname]}
+							selectedKeys={[this.state.selectedKey]}
 						/>
 					</Sider>
 					<Layout
@@ -107,5 +108,16 @@ export default class LayoutPage extends Component {
 	async componentDidMount() {
 		const { data: user } = await getUserProfile()
 		this.setState({ profile: user })
+	}
+	componentDidUpdate(prevProps) {
+		if (prevProps.location.pathname !== this.props.location.pathname) {
+			this.setState({
+				selectedKey: /^\/home\/publish/.test(
+					this.props.location.pathname
+				)
+					? '/home/publish'
+					: this.props.location.pathname,
+			})
+		}
 	}
 }
